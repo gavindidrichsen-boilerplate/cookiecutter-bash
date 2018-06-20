@@ -3,6 +3,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+# --- Helper scripts begin ---
 #/ Usage:
 #/ Description:
 #/ Examples:
