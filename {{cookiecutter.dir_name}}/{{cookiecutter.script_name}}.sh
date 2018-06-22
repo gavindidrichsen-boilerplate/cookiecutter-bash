@@ -25,8 +25,11 @@ __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename "${__file}" .sh)"
 __root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- change this as it depends on your app
 
+info "Executing ${__file}"
+
 # set flag variables
 PARAMS=""
+FARG=""
 while (( "$#" )); do
   case "$1" in
     -d|--debug)
