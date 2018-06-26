@@ -25,7 +25,16 @@ __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename "${__file}" .sh)"
 __root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- change this as it depends on your app
 
+# Run these at the start and end of every script ALWAYS
 info "Executing ${__file}"
+cleanup() {
+    local result=$?
+    if (( result  > 0 )); then
+        error "Exiting ${__file} prematurely with exit code [${result}]"
+    else
+        info "Exiting ${__file} cleanly with exit code [${result}]"
+    fi
+}
 
 # set flag variables
 PARAMS=""
@@ -74,6 +83,7 @@ main() {
 }
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
+    trap cleanup EXIT
     main
 fi
 
