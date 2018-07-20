@@ -57,8 +57,8 @@ while (( "$#" )); do
       break
       ;;
     -*|--*=) # unsupported flags
-      echo "Error: Unsupported flag $1" >&2
-      exit 1
+      errorMessage=$(echo "Error: Unsupported flag $1"; usage)
+      fatal "${errorMessage}"
       ;;
     *) # collect any positional arguments ignoring them
       PARAMS="$PARAMS $1"
@@ -66,6 +66,9 @@ while (( "$#" )); do
       ;;
   esac
 done
+
+# fail if mandetory parameters are not present
+if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
 
 # fail if any positional parameters appear; they should be preceeded with a flag
 eval set -- "$PARAMS"
