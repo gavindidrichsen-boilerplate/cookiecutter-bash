@@ -36,7 +36,7 @@ cleanup() {
     fi
 }
 
-# set flag variables
+# set flag variables (PARAMS is a collector for any positional arguments that, wrongly, get passed in)
 PARAMS=""
 FARG=""
 while (( "$#" )); do
@@ -67,12 +67,9 @@ while (( "$#" )); do
   esac
 done
 
-# set positional arguments in their proper place
+# positional parameters shouldn't be used, so warn if any positional parameters appear (to use them try 'arg1="${1:-}"')
 eval set -- "$PARAMS"
-
-# get the first 2 positional arguments
-arg1="${1:-}"
-arg2="${2:-}"
+if [[ "${PARAMS}" != "" ]]; then warning "The following parameters [${PARAMS}] have no flag so are being ignored"; fi
 
 # --- Helper scripts end ---
 # Code begins here...
