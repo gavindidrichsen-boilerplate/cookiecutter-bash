@@ -67,9 +67,12 @@ while (( "$#" )); do
   esac
 done
 
-# positional parameters shouldn't be used, so warn if any positional parameters appear (to use them try 'arg1="${1:-}"')
+# fail if any positional parameters appear; they should be preceeded with a flag
 eval set -- "$PARAMS"
-if [[ "${PARAMS}" != "" ]]; then warning "The following parameters [${PARAMS}] have no flag so are being ignored"; fi
+if [[ "${PARAMS}" != "" ]]; then 
+  errorMessage=$(echo "The following parameters [${PARAMS}] do not have flags. See the following usage:"; usage)
+  fatal "${errorMessage}"
+fi
 
 # --- Helper scripts end ---
 # Code begins here...
