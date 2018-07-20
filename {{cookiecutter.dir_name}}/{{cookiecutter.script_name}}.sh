@@ -35,7 +35,8 @@ cleanup() {
         info "Exiting ${__file} cleanly with exit code [${result}]"
     fi
 }
-
+trap cleanup EXIT
+    
 # set flag variables (PARAMS is a collector for any positional arguments that, wrongly, get passed in)
 PARAMS=""
 FARG=""
@@ -86,7 +87,6 @@ main() {
 }
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
-    trap cleanup EXIT
     main
 fi
 
