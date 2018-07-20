@@ -60,7 +60,7 @@ while (( "$#" )); do
       echo "Error: Unsupported flag $1" >&2
       exit 1
       ;;
-    *) # preserve positional arguments
+    *) # collect any positional arguments ignoring them
       PARAMS="$PARAMS $1"
       shift
       ;;
