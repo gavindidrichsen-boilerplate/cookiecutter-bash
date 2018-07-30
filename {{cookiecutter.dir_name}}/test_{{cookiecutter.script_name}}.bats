@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+load "_functions"
+
 @test "addition using bc" {
   result="$(echo 2+2 | bc)"
   [ "$result" -eq 4 ]
@@ -28,4 +30,9 @@
   diff <(echo "${status}") <(echo "2")
   [[ "bobby" =~ "bob" ]]
   [[ "${lines[0]}" =~ "diff: missing operand after" ]]
+}
+
+@test "invoking a function in _functions.bash should complete successfully" {
+  run diff
+  diff <(echo "$(sayHello)") <(echo "Hello World")
 }

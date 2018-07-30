@@ -37,7 +37,7 @@ cleanup() {
 }
 trap cleanup EXIT
 trap "kill 0" SIGINT
-    
+
 # set flag variables (PARAMS is a collector for any positional arguments that, wrongly, get passed in)
 PARAMS=""
 FARG=""
@@ -74,13 +74,16 @@ if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
 
 # fail if any positional parameters appear; they should be preceeded with a flag
 eval set -- "$PARAMS"
-if [[ "${PARAMS}" != "" ]]; then 
+if [[ "${PARAMS}" != "" ]]; then
   errorMessage=$(echo "The following parameters [${PARAMS}] do not have flags. See the following usage:"; usage)
   fatal "${errorMessage}"
 fi
 
 # --- Helper scripts end ---
-# Code begins here...
+
+# Load private functions
+# shellcheck source=src/_functions.bash
+source "${__dir}/_functions.bash"
 
 main() {
     # Script goes here...
