@@ -11,12 +11,17 @@ set -o nounset
 #/   --help: Display this help message
 usage() { grep '^#/' "$0" | cut -c4- ; exit 0 ; }
 
-# Setup logging
+: '
+Log info(), warning(), error() from a subshell so that this
+can be used within functions that return output.  In other words
+the subshell ensures that the info,warning,error message does not dirty
+the function output, the "echo"
+'
 readonly LOG_FILE="/tmp/$(basename "$0").log"
 readonly DATE_FORMAT="+%Y-%m-%d_%H:%M:%S.%2N"
-info()    { echo "[$(date ${DATE_FORMAT})] [INFO]    $*" | tee -a "$LOG_FILE" >&2 ; }
-warning() { echo "[$(date ${DATE_FORMAT})] [WARNING] $*" | tee -a "$LOG_FILE" >&2 ; }
-error()   { echo "[$(date ${DATE_FORMAT})] [ERROR]   $*" | tee -a "$LOG_FILE" >&2 ; }
+info()    { ( echo "[$(date ${DATE_FORMAT})] [INFO]    $*" | tee -a "$LOG_FILE" >&2 ; ) }
+warning() { ( echo "[$(date ${DATE_FORMAT})] [WARNING] $*" | tee -a "$LOG_FILE" >&2 ; ) }
+error()   { ( echo "[$(date ${DATE_FORMAT})] [ERROR]   $*" | tee -a "$LOG_FILE" >&2 ; ) }
 fatal()   { echo "[$(date ${DATE_FORMAT})] [FATAL]   $*" | tee -a "$LOG_FILE" >&2 ; kill 0 ; }
 
 # Set magic variables for current file & dir
