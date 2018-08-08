@@ -43,8 +43,12 @@ cleanup() {
 trap cleanup EXIT
 trap "kill 0" SIGINT
 
-# set flag variables (PARAMS is a collector for any positional arguments that, wrongly, get passed in)
-PARAMS=""
+# Define variables that hold the $ENCODED_ARGS that can be passed
+# to the script. An existing plain text $ARG_FilE can also be used
+ENCODED_ARGS=""
+ARG_FILE="${__dir}/args.json"
+JSON_SUM_OF_ALL_ARGS="{}"
+# initialize variables
 FARG=""
 while (( "$#" )); do
   case "$1" in
@@ -55,8 +59,17 @@ while (( "$#" )); do
     -h|--help)
       usage
       ;;
+	  -e|--encoded)
+      ENCODED_ARGS=$2
+      shift 2
+      ;;
+    -A|--argfile)
+      ARG_FILE=$2
+      shift 2
+      ;;
     -f|--flag-with-argument)
       FARG=$2
+      JSON_SUM_OF_ALL_ARGS=$(echo "${JSON_SUM_OF_ALL_ARGS}" | jq --arg param1 $2 '."FARG"  |= $param1')
       shift 2
       ;;
     --) # end argument parsing
@@ -64,27 +77,57 @@ while (( "$#" )); do
       break
       ;;
     -*|--*=) # unsupported flags
-      errorMessage=$(echo "Error: Unsupported flag $1"; usage)
-      fatal "${errorMessage}"
+      error "Error: Unsupported flag $1"
+      usage
+      exit 1
       ;;
-    *) # collect any positional arguments ignoring them
-      PARAMS="$PARAMS $1"
+    *) # preserve positional arguments
+      warning "Ignoring script parameter ${1} because no valid flag preceeds it"
       shift
       ;;
   esac
 done
 
-# fail if mandetory parameters are not present
-if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
-
-# fail if any positional parameters appear; they should be preceeded with a flag
-eval set -- "$PARAMS"
-if [[ "${PARAMS}" != "" ]]; then
-  errorMessage=$(echo "The following parameters [${PARAMS}] do not have flags. See the following usage:"; usage)
-  fatal "${errorMessage}"
+# either ARG_FILE or ENCODED_ARGS must be valid; otherwise bomb out
+if [[ ($ARG_FILE == "" || ! -e $ARG_FILE) && ($ENCODED_ARGS == "") ]]; then
+	error "Either --argfile (default is ${ARG_FILE}) or --encoded json arguments must be set and valid"
+	exit 1
 fi
 
+# If encoded arguments have been supplied, decode them and save to file
+if [ "X${ENCODED_ARGS}" != "X" ]; then
+  info "Decoding arguments to ${ARG_FILE}"
+
+  # Decode the bas64 string and write out the ARG file
+  echo "${ENCODED_ARGS}" | base64 --decode | jq . > "${ARG_FILE}"
+fi
+
+# If the ARG_FILE has been specified and the file exists read in the arguments
+if [[ "X${ARG_FILE}" != "X" ]]; then
+  if [[ ( -f $ARG_FILE ) ]]; then
+    info "$(echo "Reading JSON vars from ${ARG_FILE}:"; cat "${ARG_FILE}" )"
+
+    # combine the --flag arguments with --argsfile values (--flag's will override any values in the --argsfile)
+    # and update the $ARG_FILE
+    JSON_SUM_OF_ALL_ARGS=$(jq --sort-keys -s '.[0] * .[1]' "${ARG_FILE}" <(echo "${JSON_SUM_OF_ALL_ARGS}"))
+    echo "${JSON_SUM_OF_ALL_ARGS}" | jq --sort-keys '.' > "${ARG_FILE}"
+
+    VARS=$(cat "${ARG_FILE}" | jq -r '. | keys[] as $k | "\($k)=\"\(.[$k])\""')
+
+    # Evaluate all the vars in the arguments
+    info "Evaluating the json arguments as bash variables"
+    while read -r line; do
+      eval "$line"
+    done <<< "$VARS"
+  else
+    fatal "Unable to find specified args file: ${ARG_FILE}"
+  fi
+fi
 # --- Helper scripts end ---
+
+
+# fail if mandetory parameters are not present
+if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
 
 # Load private functions
 # shellcheck source=src/_functions.bash
