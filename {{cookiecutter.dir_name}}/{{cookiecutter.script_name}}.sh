@@ -112,7 +112,11 @@ if [[ "X${ARG_FILE}" != "X" ]]; then
     JSON_SUM_OF_ALL_ARGS=$(jq --sort-keys -s '.[0] * .[1]' "${ARG_FILE}" <(echo "${JSON_SUM_OF_ALL_ARGS}"))
     echo "${JSON_SUM_OF_ALL_ARGS}" | jq --sort-keys '.' > "${ARG_FILE}"
 
-    VARS=$(cat "${ARG_FILE}" | jq -r '. | keys[] as $k | "\($k)=\"\(.[$k])\""')
+    # transform the JSON into bash key=value statements
+    VARS=$(echo ${JSON_SUM_OF_ALL_ARGS} | jq -r '. | keys[] as $k | "\($k)=\"\(.[$k])\""' )
+    # ensure that key's that are arrays are in the correct format (..) instead of "[..]"
+    VARS=$(echo "${VARS}" | sed 's/\"\[/(/g' | sed 's/\]\"/)/g' | sed 's/,/ /g' )
+    info "$(echo "Evaluating the following bash variables:"; echo "${VARS}")"
 
     # Evaluate all the vars in the arguments
     info "Evaluating the json arguments as bash variables"
@@ -123,11 +127,12 @@ if [[ "X${ARG_FILE}" != "X" ]]; then
     fatal "Unable to find specified args file: ${ARG_FILE}"
   fi
 fi
-# --- Helper scripts end ---
-
 
 # fail if mandetory parameters are not present
 if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
+
+# --- Helper scripts end ---
+
 
 # Load private functions
 # shellcheck source=src/_functions.bash
