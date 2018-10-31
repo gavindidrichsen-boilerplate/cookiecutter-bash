@@ -140,6 +140,7 @@ source "${__dir}/_functions.bash"
 
 main() {
     # Script goes here...
+    info "starting the main function"
     return
 }
 
