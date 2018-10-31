@@ -129,7 +129,7 @@ if [[ "X${ARG_FILE}" != "X" ]]; then
 fi
 
 # fail if mandetory parameters are not present
-if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
+# if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
 
 # --- Helper scripts end ---
 
