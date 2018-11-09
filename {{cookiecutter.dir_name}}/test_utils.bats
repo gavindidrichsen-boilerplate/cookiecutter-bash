@@ -3,7 +3,8 @@
 # See https://github.com/ztombol/bats-assert
 load '/usr/local/lib/bats-support/load.bash'
 load '/usr/local/lib/bats-assert/load.bash'
-load "_functions"
+# NOTE: 'load' expects a file called utils.bash to exist
+load "utils"
 
 @test 'assert() should succeed' {
   touch '/tmp/test.log'
@@ -81,5 +82,5 @@ load "_functions"
 
 @test "invoking a function in _functions.bash should complete successfully" {
   run diff
-  diff <(echo "$(sayHello)") <(echo "Hello World")
+  diff <(echo "$(utils::sayHello)") <(echo "Hello World")
 }

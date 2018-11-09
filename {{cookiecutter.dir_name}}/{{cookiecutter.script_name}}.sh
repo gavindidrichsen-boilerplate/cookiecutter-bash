@@ -67,7 +67,7 @@ while (( "$#" )); do
       ARG_FILE=$2
       shift 2
       ;;
-    -f|--flag-with-argument)
+    -f|--flag_with_argument)
       FARG=$2
       JSON_SUM_OF_ALL_ARGS=$(echo "${JSON_SUM_OF_ALL_ARGS}" | jq --arg param1 $2 '."FARG"  |= $param1')
       shift 2
@@ -129,14 +129,14 @@ if [[ "X${ARG_FILE}" != "X" ]]; then
 fi
 
 # fail if mandetory parameters are not present
-# if [[ "$FARG" == "" ]]; then fatal "--flag-with-argument must be defined"; fi
+# if [[ "$FARG" == "" ]]; then fatal "--flag_with_argument must be defined"; fi
 
 # --- Helper scripts end ---
 
 
 # Load private functions
 # shellcheck source=src/_functions.bash
-source "${__dir}/_functions.bash"
+source "${__dir}/utils.bash"
 
 main() {
     # Script goes here...
