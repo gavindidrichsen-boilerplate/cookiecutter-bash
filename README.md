@@ -4,7 +4,7 @@ A cookiecutter template for writing bash scripts inspired by [TjWallas](https://
 ## Pre-Requisite Software
 
 - Install [bats](https://github.com/sstephenson/bats/wiki/Install-Bats-Using-a-Package).  brew install bats
-- Install [bats-support](https://github.com/ztombol/bats-support).  brew install bats-support
+- Install [bats-assert and bats-file](https://github.com/ztombol/bats-docs).  brew install bats-assert; brew install bats-file
 - Install [jq](https://stedolan.github.io/jq/manual/).  brew install jq
 - Install [jo](https://github.com/jpmens/jo).  brew install jo
 
