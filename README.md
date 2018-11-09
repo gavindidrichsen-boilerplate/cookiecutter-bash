@@ -13,7 +13,7 @@ A cookiecutter template for writing bash scripts inspired by [TjWallas](https://
 Create a new cookiecutter template.  For example:
 
 ```bash
-➜  cookiecutter git:(master) ✗ cookiecutter cookiecutter-bash
+➜  cookiecutter git:(master) ✗ cookiecutter https://github.com/gavindidrichsen/cookiecutter-bash
 dir_name [.]: dummy
 script_name [my_script]: main
 ```
