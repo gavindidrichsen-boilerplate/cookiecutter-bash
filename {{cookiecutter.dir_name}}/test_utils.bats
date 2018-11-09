@@ -80,7 +80,7 @@ load "utils"
   [[ "${lines[0]}" =~ "diff: missing operand after" ]]
 }
 
-@test "invoking a function in _functions.bash should complete successfully" {
+@test "invoking the utils::sayHello() in utils.bash should complete successfully" {
   run diff
   diff <(echo "$(utils::sayHello)") <(echo "Hello World")
 }
