@@ -1,8 +1,8 @@
-# cookiecutter-bash
+# Bash Toolbox
 
 ### Table of Contents
 
-- [cookiecutter-bash](#cookiecutter-bash)
+- [Bash Toolbox](#bash-toolbox)
     - [Table of Contents](#table-of-contents)
   - [Using the Library](#using-the-library)
   - [Testing the Library](#testing-the-library)
