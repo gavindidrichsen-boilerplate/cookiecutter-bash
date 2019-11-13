@@ -3,10 +3,13 @@ include logger.util.LoggerUtil
 @class
 Logger(){
 	log(){
-		local logLevel=${1}; shift
-		local logMessage="${@}"
+		# ensure that all tracing is disabled within the logging code
+		{
+			local logLevel=${1}; shift
+			local logMessage="${@}"
 
-		LoggerUtil getLogMsg ${logLevel} ${logMessage}
+			LoggerUtil getLogMsg ${logLevel} ${logMessage}
+		} 2> /dev/null
 	}
 
 	${@}
