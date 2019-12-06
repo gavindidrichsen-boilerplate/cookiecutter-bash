@@ -10,7 +10,7 @@ LoggerUtil(){
 
 		if [[ ( ${logLevel} == ERROR) || (${logLevel} == FATAL) ]]; then
 			local color=red
-		elif [[ ${logLevel} == DEBUG ]]; then
+		elif [[ ${logLevel} == INFO ]]; then
 			local color=yellow
 		elif [[ ${logLevel} == SUCCESS ]]; then
 			local color=green
