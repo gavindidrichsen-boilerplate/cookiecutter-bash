@@ -24,6 +24,7 @@ include string.util.StringUtil
 # --- Helper scripts end ---
 
 main() {
+    Logger enable_debug_flag "${@:-}"
     Logger log info "StringUtil toUpperCase 'bob' produces"
     StringUtil toUpperCase "bob"
     Logger log success "DONE"
