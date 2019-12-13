@@ -23,14 +23,30 @@ include string.util.StringUtil
 
 # --- Helper scripts end ---
 
-main() {
-    Logger enable_debug_flag "${@:-}"
-    Logger log info "StringUtil toUpperCase 'bob' produces"
-    StringUtil toUpperCase "bob"
-    Logger log success "DONE"
-}
+_usage() { Logger log fatal "$(basename "$0") [ --help --debug ]"; }
+_remaining_positional_arguments=()
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+    case $key in
+        --help)
+        _usage
+        shift # past argument
+        ;;
+        *)    # unknown option
+        _remaining_positional_arguments+=("$1") # save it in an array for later
+        shift # past argument
+        ;;
+    esac
+done
+{% raw %}
+if [[ ${#_remaining_positional_arguments[@]} > 0 ]]; then set -- "${_remaining_positional_arguments[@]}"; fi
+{% endraw %}
+_remaining_positional_arguments=()
 
-if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
-    main "${@:-}"
-fi
+
+Logger enable_debug_flag "${@:-}"
+Logger log info "StringUtil toUpperCase 'bob' produces"
+StringUtil toUpperCase "bob"
+Logger log success "DONE"
 
