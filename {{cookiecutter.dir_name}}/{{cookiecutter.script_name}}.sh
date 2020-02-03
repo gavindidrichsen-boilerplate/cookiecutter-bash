@@ -23,6 +23,7 @@ include string.util.StringUtil
 
 # --- Helper scripts end ---
 
+# set parameters
 _usage() { Logger log fatal "$(basename "$0") [ --help --debug ]"; }
 _remaining_positional_arguments=()
 while [[ $# -gt 0 ]]
@@ -39,12 +40,14 @@ do
         ;;
     esac
 done
-{% raw %}
+{% raw -%}
 if [[ ${#_remaining_positional_arguments[@]} > 0 ]]; then set -- "${_remaining_positional_arguments[@]}"; fi
-{% endraw %}
-_remaining_positional_arguments=()
+{%- endraw %}
 
 
+############
+#   MAIN   #
+############
 Logger enable_debug_flag "${@:-}"
 Logger log info "StringUtil toUpperCase 'bob' produces"
 StringUtil toUpperCase "bob"

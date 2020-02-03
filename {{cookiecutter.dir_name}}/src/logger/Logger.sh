@@ -4,12 +4,12 @@ include logger.util.LoggerUtil
 Logger() {
 	log(){
 		# ensure that all tracing is disabled within the logging code
+
 		{
 			local logLevel=${1}; shift
 			local logMessage="${@}"
-
-			LoggerUtil getLogMsg ${logLevel} ${logMessage}
-		} 2> /dev/null
+			LoggerUtil getLogMsg ${logLevel} ${logMessage} 3>&2 >&3 2> /dev/null
+		} 
 	}
 
     enable_debug_flag() {
