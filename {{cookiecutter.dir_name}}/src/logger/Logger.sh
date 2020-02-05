@@ -8,8 +8,8 @@ Logger() {
 		{
 			local logLevel=${1}; shift
 			local logMessage="${@}"
-			LoggerUtil getLogMsg ${logLevel} ${logMessage} 3>&2 >&3 2> /dev/null
-		} 
+			LoggerUtil getLogMsg ${logLevel} ${logMessage} 
+		} 3>&2 >&3 2> /dev/null
 	}
 
     enable_debug_flag() {
