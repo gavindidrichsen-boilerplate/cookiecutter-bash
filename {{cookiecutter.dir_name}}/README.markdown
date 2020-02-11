@@ -38,4 +38,6 @@ Running the above will produce something like:
 
 ## Testing the Library
 
-To Be Completed
+source test.env and run an individual bats test
+OR
+Run the unit_test_runner.sh, which sources the test.env
