@@ -17,8 +17,7 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # load the bash library
 source "${__dir}/src/init.sh"
 include logger.Logger
-Logger enable_debug_flag "${@:-}"
-include string.util.StringUtil
+include string.String
 
 # --- Helper scripts begin ---
 
@@ -49,7 +48,7 @@ if [[ ${#_remaining_positional_arguments[@]} > 0 ]]; then set -- "${_remaining_p
 ############
 #   MAIN   #
 ############
-Logger log info "StringUtil toUpperCase 'bob' produces"
-StringUtil toUpperCase "bob"
+Logger log info "String toUpperCase 'bob' produces"
+String toUpperCase "bob"
 Logger log success "DONE"
 
