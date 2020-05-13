@@ -10,7 +10,8 @@ Logger() {
             local logMessage="${@}"
 
             # ensure all output goes to stderr so that functions can log without corrupting output
-            1>&2 LoggerUtil getLogMsg ${logLevel} ${logMessage}
+            # 1>&2 LoggerUtil getLogMsg ${logLevel} ${logMessage}
+            LoggerUtil getLogMsg ${logLevel} ${logMessage}
         }
 
 		# ensure that all tracing is disabled within the logging code
