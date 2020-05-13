@@ -20,13 +20,7 @@ LoggerUtil(){
     	local dateTime=$(date "+%F %T")
 		message="[${dateTime}] [${logLevel}] $( colorme ${color} "${message}" )"
 
-		# if FATAL, then print to stderr and die
-		if [[ ${logLevel} == FATAL ]]; then 
-			Print to_stderr "${message}"
-			exit 1; 
-		fi
-
-		Print to_terminal "${message}"
+		echo "${message}"
 	}
 
 	$@

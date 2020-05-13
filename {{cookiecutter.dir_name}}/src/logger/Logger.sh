@@ -1,6 +1,7 @@
 include logger.util.LoggerUtil
 include string.String
 include debug.Debug
+include print.Print
 
 @class
 Logger() {
@@ -9,9 +10,16 @@ Logger() {
             local logLevel=${1}; shift
             local logMessage="${@}"
 
+            local full_message=$(LoggerUtil getLogMsg ${logLevel} ${logMessage})
+
+            # if FATAL, then print to stderr and die
+            if [[ ${logLevel} == fatal ]]; then 
+                Print to_stderr "${full_message}"
+                exit 1; 
+            fi
+
             # ensure all output goes to stderr so that functions can log without corrupting output
-            # 1>&2 LoggerUtil getLogMsg ${logLevel} ${logMessage}
-            LoggerUtil getLogMsg ${logLevel} ${logMessage}
+            Print to_terminal "${full_message}"
         }
 
 		# ensure that all tracing is disabled within the logging code
