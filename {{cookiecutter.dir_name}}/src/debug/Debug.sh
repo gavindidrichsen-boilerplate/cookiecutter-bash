@@ -1,4 +1,5 @@
 include logger.Logger
+include print.Print
 
 @class
 Debug(){
@@ -19,6 +20,10 @@ Debug(){
 			Logger log debug "not turning on xtrace because DEBUG mode is on"
 		else
 			Logger log debug "turning xtrace on"
+			if Print is_in_bats_context; then
+				# send xtrace output to & 3 NOT to the default stderr &2
+				export BASH_XTRACEFD=3
+			fi
 			set -o xtrace
 		fi
 	}
@@ -32,7 +37,17 @@ Debug(){
 			Logger log debug "not turning off xtrace because DEBUG mode is on"
 		else
 			Logger log debug "turning xtrace off"
-			set +o xtrace
+			if Print is_in_bats_context; then
+				# ensure 'off' doesn't get added to xtrace output
+				{ set +o xtrace; } 3>/dev/null
+				# ensure default xtrace stream goes back to default stderr &2
+				export BASH_XTRACEFD=2
+			else
+				# ensure 'off' doesn't get added to xtrace output
+				{ set +o xtrace; } 2>/dev/null
+			fi
+			
+			
 		fi
 	}
 

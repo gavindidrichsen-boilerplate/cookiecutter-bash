@@ -8,6 +8,10 @@ source ${APPLICATION_ROOT}/src/init.sh
 include debug.Debug
 include string.String
 
+setup(){
+	mkdir -p ${BATS_TEST_DIRNAME}/results
+}
+
 do_common_stuff(){
 	echo "####### Triggering Debug on()"
 	Debug on
@@ -23,14 +27,21 @@ do_common_stuff(){
 	debug_is_off(){
 		do_common_stuff
 	}
-	run debug_is_off
-    assert_output --partial <<- 'EOF'
+	run debug_is_off 3> >(tee -a ${BATS_TEST_DIRNAME}/results/fd3.log)
+	assert_output <<- 'EOF'
 		####### Triggering Debug on()
+		Harry
+		####### Triggering Debug off()
+		Hope
+	EOF
+
+	# verify that xtrace DOES NOT go to stout (&3 for bats tests, &2 for scripts)
+	run cat ${BATS_TEST_DIRNAME}/results/fd3.log
+    assert_output --partial <<- 'EOF'
 		+++ echo harry
 		+++ sed s/h/H/g
 		++ local result1=Harry
 		++ echo Harry
-		Harry
 		++ Debug off
 		++ :
 		++ :
@@ -42,9 +53,17 @@ do_common_stuff(){
 		+++ log debug turning xtrace off
 		+++ shopt -q -o xtrace
 		+++ set +x
-		+++ set +o xtrace
+	EOF
+	assert_output --partial <<- 'EOF'
+		+++ Print is_in_bats_context
+		+++ :
+		+++ :
+		+++ is_in_bats_context
+		+++ true
+		+++ return 0
 	EOF
 }
+
 @test "off() should turn off xtrace" {
 	debug_is_off(){
 		do_common_stuff

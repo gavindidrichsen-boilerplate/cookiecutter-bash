@@ -1,5 +1,17 @@
 @class
 Print(){
+
+    is_in_bats_context(){
+        # if filedescriptor 3 exists,...
+        if { true >&3; } 2<> /dev/null; then
+        	# ...we're in a BATS test so output to FD 3
+        	return 0
+        else
+            # ...otherwise we're calling from a normal script so send to stderr
+           return 1
+        fi
+    }
+
 	: <<- 'comment'
 	INPUT: a message to log
 
@@ -21,11 +33,11 @@ Print(){
         local message="${@}"
 
         # if filedescriptor 3 exists,...
-        if { true >&3; } 2<> /dev/null; then
-        	# ...we're in a BATS test so output to FD 3
+        if Print is_in_bats_context; then
+        	# echo to file descriptor 3
         	echo >&3 -e "${message}"
         else
-            # ...otherwise we're calling from a normal script so send to stderr
+            # echo to stderr, file descriptor 2
             echo >&2 -e "${message}"
         fi
     }
