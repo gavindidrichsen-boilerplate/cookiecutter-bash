@@ -1,0 +1,8 @@
+{
+    "dir_name": ".",
+    "script_name": "my_script",
+    "_copy_without_render": [
+        "src",
+        "test"
+    ]
+}
