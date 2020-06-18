@@ -15,6 +15,7 @@
 
 Ensure the following software is installed:
 
+* [cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/installation.html)
 * [bats-core](https://github.com/bats-core/bats-core)
 * [bats-support](https://github.com/bats-core/bats-support)
 * [bats-mock](https://github.com/jasonkarns/bats-mock)
