@@ -33,7 +33,7 @@ Create a templates directory; export this as $COOKIE; and clone cookiecutter-bas
 ➜ git clone https://github.com/gavindidrichsen/cookiecutter-bash
 ```
 
-Choose another location and create your 'bash_toolbox_directory' which is your 'first' bash template and includes all the source and test code:
+Choose another location and create your 'bash_toolbox_directory' which is your first bash template and includes all the source and test code:
 
 ```bash
 ➜ cookiecutter $COOKIE/cookiecutter-bash/first
