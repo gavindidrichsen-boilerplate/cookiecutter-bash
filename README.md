@@ -1,5 +1,7 @@
 # cookiecutter-bash
 
+Modular bash framework that encourages TDD
+
 ### Table of Contents
 
 - [cookiecutter-bash](#cookiecutter-bash)
