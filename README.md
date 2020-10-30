@@ -1,6 +1,6 @@
 # cookiecutter-bash
 
-Modular bash framework that encourages TDD
+Modular bash framework that encourages TDD, inspired by [anthony-chu/bash-toolbox](https://github.com/anthony-chu/bash-toolbox)
 
 ### Table of Contents
 
